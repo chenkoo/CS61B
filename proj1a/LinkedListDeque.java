@@ -24,7 +24,7 @@ public class LinkedListDeque<T> {
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
         size = 0;
-     }
+    }
 
      /**
      * Add an item to the first position of LLdeque.
@@ -83,12 +83,14 @@ public class LinkedListDeque<T> {
      * @return the removed item.
      */
     public T removeFirst() {
-        T item = sentinel.next.item;
-        sentinel.next.item = null;
-        sentinel.next = sentinel.next.next;
-        sentinel.next.prev = sentinel;
-        size -= 1;
-        return item;
+        if (!isEmpty()) {
+            T item = sentinel.next.item;
+            sentinel.next.item = null;
+            sentinel.next = sentinel.next.next;
+            sentinel.next.prev = sentinel;
+            size -= 1;
+            return item;
+        }
     }
 
     /**
@@ -96,12 +98,14 @@ public class LinkedListDeque<T> {
      * @return the removed item.
      */
     public T removeLast() {
-        T item = sentinel.prev.item;
-        sentinel.prev.item = null;
-        sentinel.prev = sentinel.prev.prev;
-        sentinel.prev.next = sentinel;
-        size -= 1;
-        return item;
+        if (!isEmpty()) {
+            T item = sentinel.prev.item;
+            sentinel.prev.item = null;
+            sentinel.prev = sentinel.prev.prev;
+            sentinel.prev.next = sentinel;
+            size -= 1;
+            return item;
+        }
     }
 
     /**
