@@ -10,7 +10,8 @@ public class Palindrome {
 
     private String dequeToString(Deque<Character> d) {
         String actual = "";
-        for (int i = 0; i < d.size(); i++) {
+        int size = d.size();
+        for (int i = 0; i < size; i++) {
             actual += d.removeFirst();
         }
         return actual;
