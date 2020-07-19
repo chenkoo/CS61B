@@ -91,6 +91,7 @@ public class LinkedListDeque<T> {
             size -= 1;
             return item;
         }
+        return null;
     }
 
     /**
@@ -106,6 +107,7 @@ public class LinkedListDeque<T> {
             size -= 1;
             return item;
         }
+        return null;
     }
 
     /**
