@@ -131,7 +131,7 @@ public class ArrayDeque<T> {
         }
         T lastitem = null;
         if (size == 1) {
-            removeFirst();
+            return removeFirst();
         } else {
             if (nextLast == 0) {
                 lastitem = items[items.length - 1];
@@ -153,4 +153,15 @@ public class ArrayDeque<T> {
     public T get(int index) {
         return items[index];
     }
+
+    /**public static void main(String[] args) {
+        ArrayDeque<Integer> d = new ArrayDeque<Integer>();
+        d.addLast(0);
+        d.removeFirst();
+        d.addFirst(2);
+        d.addFirst(3);
+        d.get(1);
+        d.removeLast();
+        d.removeLast();
+    }*/
 }
