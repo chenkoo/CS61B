@@ -2,9 +2,9 @@ public class LinkedListDeque<T> {
 
     private class TNode {
 
-        private T item;
-        private TNode prev;
-        private TNode next;
+        public T item;
+        public TNode prev;
+        public TNode next;
 
         public TNode(T t, TNode tprev, TNode tnext) {
             item = t;
@@ -41,9 +41,16 @@ public class LinkedListDeque<T> {
      * @param item item to be added.
      */
     public void addLast(T item) {
-        sentinel.prev = new TNode(item, sentinel.prev, sentinel);
-        sentinel.prev.prev.next = sentinel.prev;
-        size += 1;
+        if (size == 0) {
+            sentinel.next = new TNode(item, sentinel, sentinel);
+            sentinel.prev = sentinel.next;
+            size = 1;
+        } else {
+            TNode temp = new TNode(item, sentinel.prev, sentinel);
+            sentinel.prev.next = temp;
+            sentinel.prev = temp;
+            size += 1;
+        }
     }
 
     /**
@@ -71,7 +78,7 @@ public class LinkedListDeque<T> {
             int i = 0;
             while (i < size - 1) {
                 System.out.print(temp.item + " ");
-                temp = temp.next;
+                temp = sentinel.next.next;
                 i++;
             }
             System.out.print(temp.item);
@@ -84,7 +91,6 @@ public class LinkedListDeque<T> {
      */
     public T removeFirst() {
         T item = sentinel.next.item;
-        sentinel.next.item = null;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
         size -= 1;
@@ -97,7 +103,6 @@ public class LinkedListDeque<T> {
      */
     public T removeLast() {
         T item = sentinel.prev.item;
-        sentinel.prev.item = null;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
         size -= 1;
