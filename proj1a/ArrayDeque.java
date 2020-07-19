@@ -18,7 +18,7 @@ public class ArrayDeque<T> {
             if (nextFirst == items.length - 1) {
                 System.arraycopy(items, 0, itemsNew, 0, size);
                 items = itemsNew;
-                nextFirst = items.length -1;
+                nextFirst = items.length - 1;
             } else if (nextFirst == 0) {
                 System.arraycopy(items, 1, itemsNew, size + 2, size);
                 items = itemsNew;
@@ -41,7 +41,7 @@ public class ArrayDeque<T> {
                         nextFirst - items.length / 2 + 1, size);
                 items = itemsNew;
                 nextFirst -= items.length / 2;
-            } else if (nextFirst < nextLast){
+            } else if (nextFirst < nextLast) {
                 System.arraycopy(items, nextFirst + 1, itemsNew, 0, size);
                 items = itemsNew;
                 nextFirst = items.length - 1;
@@ -63,7 +63,7 @@ public class ArrayDeque<T> {
         items[nextFirst] = item;
         size += 1;
         if (nextFirst == 0) {
-            nextFirst = items.length -1;
+            nextFirst = items.length - 1;
         } else {
             nextFirst -= 1;
         }
@@ -130,14 +130,18 @@ public class ArrayDeque<T> {
             return null;
         }
         T lastitem = null;
-        if (nextLast == 0) {
-            lastitem = items[items.length - 1];
-            items[items.length - 1] = null;
-            nextLast = items.length - 1;
+        if (size == 1) {
+            removeFirst();
         } else {
-            lastitem = items[nextLast - 1];
-            items[nextLast - 1] = null;
-            nextLast -= 1;
+            if (nextLast == 0) {
+                lastitem = items[items.length - 1];
+                items[items.length - 1] = null;
+                nextLast = items.length - 1;
+            } else {
+                lastitem = items[nextLast - 1];
+                items[nextLast - 1] = null;
+                nextLast -= 1;
+            }
         }
         size -= 1;
         if (items.length >= 16 && size / items.length < 0.25) {
