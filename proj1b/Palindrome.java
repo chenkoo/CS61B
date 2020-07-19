@@ -32,7 +32,8 @@ public class Palindrome {
 
     private boolean isPalindrome(Deque<Character> wordInDeque, CharacterComparator cc) {
         while (wordInDeque.size() > 1) {
-            return cc.equalChars(wordInDeque.removeFirst(), wordInDeque.removeLast()) && isPalindrome(wordInDeque, cc);
+            return cc.equalChars(wordInDeque.removeFirst(), wordInDeque.removeLast())
+                    && isPalindrome(wordInDeque, cc);
         }
         return true;
     }
