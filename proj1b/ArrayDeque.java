@@ -1,4 +1,4 @@
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T> {
 
     private T[] items;
     private int size;
@@ -13,54 +13,51 @@ public class ArrayDeque<T> {
     }
 
     private void resize() {
+        T[] itemsNew;
         if (size == items.length) {
-            T[] itemsNew = (T[]) new Object[size * 2];
-            System.arraycopy(itemsNew, 0, items, 0, size);
-            items = itemsNew;
-            nextFirst = items.length - 1;
-            nextLast = size;
+            itemsNew = (T[]) new Object[size * 2];
         } else {
-            T[] itemsNew = (T[]) new Object[size / 2];
-            if (nextFirst == items.length - 1) {
-                System.arraycopy(itemsNew, 0, items, 0, size);
-                items = itemsNew;
-                nextFirst = items.length - 1;
-                nextLast = size;
-            } else if (nextLast == 0 || nextFirst < nextLast) {
-                System.arraycopy(itemsNew, 0, items, nextFirst + 1, size);
-                items = itemsNew;
-                nextFirst = items.length - 1;
-                nextLast = size;
-            } else {
-                System.arraycopy(itemsNew, 0, items, 0, nextLast);
-                System.arraycopy(itemsNew, nextFirst - size / 2 + 1, items,
-                        nextFirst + 1, size - nextLast);
-                items = itemsNew;
-                nextFirst -= size / 2;
-            }
+            itemsNew = (T[]) new Object[items.length / 2];
         }
+        int s = (nextFirst + 1) % items.length;
+        for (int i = 0; i < size; i++) {
+            itemsNew[i] = items[s];
+            s = (nextFirst + i + 2) % items.length;
+        }
+        items = itemsNew;
+        nextFirst = items.length - 1;
+        nextLast = size;
     }
 
+    @Override
     public void addFirst(T item) {
-        items[nextFirst] = item;
-        size += 1;
         if (size == items.length) {
             resize();
+        }
+        items[nextFirst] = item;
+        size += 1;
+        if (nextFirst == 0) {
+            nextFirst = items.length - 1;
         } else {
             nextFirst -= 1;
         }
     }
 
+    @Override
     public void addLast(T item) {
-        items[nextLast] = item;
-        size += 1;
         if (size == items.length) {
             resize();
+        }
+        items[nextLast] = item;
+        size += 1;
+        if (nextLast == items.length - 1) {
+            nextLast = 0;
         } else {
             nextLast += 1;
         }
     }
 
+    @Override
     public boolean isEmpty() {
         if (size == 0) {
             return true;
@@ -68,14 +65,16 @@ public class ArrayDeque<T> {
         return false;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public void printDeque() {
         if (!isEmpty()) {
             int i = 0;
-            while (i < size - 1) {
+            while (i < items.length - 1) {
                 System.out.print(items[i] + " ");
                 i++;
             }
@@ -83,9 +82,13 @@ public class ArrayDeque<T> {
         }
     }
 
+    @Override
     public T removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
         T firstitem = null;
-        if (nextFirst + 1 == items.length) {
+        if (nextFirst == items.length - 1) {
             firstitem = items[0];
             items[0] = null;
             nextFirst = 0;
@@ -95,13 +98,17 @@ public class ArrayDeque<T> {
             nextFirst += 1;
         }
         size -= 1;
-        if (items.length >= 16 && size / items.length < 0.25) {
+        if (items.length >= 16 && size < (items.length * 0.25)) {
             resize();
         }
         return firstitem;
     }
 
+    @Override
     public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
         T lastitem = null;
         if (nextLast == 0) {
             lastitem = items[items.length - 1];
@@ -113,13 +120,18 @@ public class ArrayDeque<T> {
             nextLast -= 1;
         }
         size -= 1;
-        if (items.length >= 16 && size / items.length < 0.25) {
+        if (items.length >= 16 && size < (items.length * 0.25)) {
             resize();
         }
         return lastitem;
     }
 
+    @Override
     public T get(int index) {
-        return items[index];
+        if (index > size) {
+            return null;
+        } else {
+            return items[(index + nextFirst + 1) % items.length];
+        }
     }
 }
