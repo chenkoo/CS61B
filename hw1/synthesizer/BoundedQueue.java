@@ -1,7 +1,7 @@
 package synthesizer;
 import java.util.Iterator;
 
-public interface BoundedQueue<T> extends Iterable<T>{
+public interface BoundedQueue<T> extends Iterable<T> {
 
     int capacity(); //return the size of buffer
     int fillCount();    //return number of items currently in the buffer
