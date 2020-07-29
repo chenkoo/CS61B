@@ -36,7 +36,7 @@ public class Percolation {
         if (row < 0 || row > dimension - 1 || col < 0 || col > dimension - 1) {
             throw new IndexOutOfBoundsException();
         }
-        if (map[row][col]) {
+        if (isOpen(row, col)) {
             return;
         }
         map[row][col] = true;
@@ -52,7 +52,10 @@ public class Percolation {
             int adjrow = row + s[0];
             int adjcol = col + s[1];
             if (adjrow >= 0 && adjrow < dimension && adjcol >= 0 && adjcol < dimension) {
-                uf.union(xyto1D(row, col), xyto1D(adjrow, adjcol));
+                if (isOpen(adjrow, adjcol)) {
+                    uf.union(xyto1D(row, col), xyto1D(adjrow, adjcol));
+                    ufNoBottom.union(xyto1D(row, col), xyto1D(adjrow, adjcol));
+                }
             }
         }
     }
@@ -70,8 +73,7 @@ public class Percolation {
         if (row < 0 || row > dimension - 1 || col < 0 || col > dimension - 1) {
             throw new IndexOutOfBoundsException();
         }
-        return uf.connected(xyto1D(row, col), top) && uf.connected(xyto1D(row, col), bottom)
-                && ufNoBottom.connected(xyto1D(row, col), top);
+        return ufNoBottom.connected(xyto1D(row, col), top);
     }
 
     // number of open sites

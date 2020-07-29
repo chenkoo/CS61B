@@ -4,14 +4,14 @@ import edu.princeton.cs.introcs.StdRandom;
 
 public class PercolationStats {
 
-    private int[] percoThred;
+    private double[] percoThred;
 
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException();
         }
-        percoThred = new int[T];
+        percoThred = new double[T];
         for (int i = 0; i < T; i++) {
             Percolation p = pf.make(N);
             while (!p.percolates()) {
@@ -19,23 +19,22 @@ public class PercolationStats {
                 int col = StdRandom.uniform(N);
                 p.open(row, col);
             }
-            percoThred[i] = p.numberOfOpenSites();
+            percoThred[i] = (double) p.numberOfOpenSites() / (N * N);
         }
     }
 
     // sample mean of percolation threshold
     public double mean() {
-        int sum = 0;
+        double sum = 0.0;
         for (int i = 0; i < percoThred.length; i++) {
             sum += percoThred[i];
         }
-        double m = (double) sum / percoThred.length;
-        return m;
+        return sum / percoThred.length;
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        int sum = 0;
+        double sum = 0.0;
         double m = mean();
         for (int i = 0; i < percoThred.length; i++) {
             sum += (percoThred[i] - m) * (percoThred[i] - m);
